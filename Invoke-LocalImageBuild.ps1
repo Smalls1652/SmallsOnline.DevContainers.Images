@@ -14,5 +14,5 @@ foreach ($buildItem in $dockerFiles) {
 
     $imageName = "dev-container-$($imageNameRegexMatch.Groups["imageName"].Value)"
 
-    podman build --tag "$($imageName)/$($imageTag)" --tag "$($imageName)/latest" --file "$($buildItem.FullName)"
+    podman build --tag "$($imageName):$($imageTag)" --tag "$($imageName):latest" --file "$($buildItem.FullName)"
 }
