@@ -39,7 +39,7 @@ jobs:
               id: meta
               uses: docker/metadata-action@v4
               with:
-                  images: ${{ env.CONTAINER_REGISTRY_URL }}/dev-container-${{ matrix.imagename }}
+                  images: ${{ env.CONTAINER_REGISTRY_URL }}/${{ github.actor }}/dev-container-${{ matrix.imagename }}
                   tags: |
                     type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
                     type=sha
