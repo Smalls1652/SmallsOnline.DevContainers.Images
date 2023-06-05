@@ -17,6 +17,8 @@ jobs:
             matrix:
                 imagename: 
                     - documentation
+                    - dotnet-7
+                    - dotnet-8-preview
 
         permissions:
             packages: write
