@@ -1,5 +1,8 @@
 [CmdletBinding()]
-param()
+param(
+    [Parameter(Position = 0)]
+    [string[]]$ImagesToBuild
+)
 
 $scriptRoot = $PSScriptRoot
 
@@ -11,8 +14,15 @@ $imageTag = [System.DateTimeOffset]::Now.UtcDateTime.ToString("yyyyMMddHHmmss")
 
 foreach ($buildItem in $dockerFiles) {
     $imageNameRegexMatch = $imageNameRegex.Match($buildItem.Name)
+    $baseImageName = $imageNameRegexMatch.Groups["imageName"].Value
 
-    $imageName = "dev-container-$($imageNameRegexMatch.Groups["imageName"].Value)"
+    if ($null -ne $ImagesToBuild -and $baseImageName -notin $ImagesToBuild) {
+        Write-Warning "Skipping '$($baseImageName)'."
+    }
+    else {
+        $imageName = "dev-container-$($baseImageName)"
 
-    podman build --tag "$($imageName):$($imageTag)" --tag "$($imageName):latest" --file "$($buildItem.FullName)"
+        Write-Verbose "Running 'podman buildx build --tag `"$($imageName):$($imageTag)`" --tag `"$($imageName):latest`" --file `"$($buildItem.FullName)`"'"
+        podman buildx build --tag "$($imageName):$($imageTag)" --tag "$($imageName):latest" --file "$($buildItem.FullName)"
+    }
 }
