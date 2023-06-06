@@ -15,11 +15,6 @@ RUN apt-get update; \
     gnupg \
     libvshadow-utils
 
-# Install pandoc
-RUN wget -q "https://github.com/jgm/pandoc/releases/download/3.1.2/pandoc-3.1.2-1-amd64.deb"; \
-    dpkg -i pandoc-3.1.2-1-amd64.deb; \
-    rm pandoc-3.1.2-1-amd64.deb
-
 # Install powershell
 RUN wget -q "https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/packages-microsoft-prod.deb"; \
     dpkg -i packages-microsoft-prod.deb; \
