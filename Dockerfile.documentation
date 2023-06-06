@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/devcontainers/base:jammy
 
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Update already installed packages and install core packages
 RUN apt-get update; \
