@@ -1,13 +1,19 @@
 FROM mcr.microsoft.com/devcontainers/base:jammy
 
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
+ENV DOCKER_BUILDKIT=1
 
 # Update already installed packages and install core packages
 RUN apt-get update; \
     apt-get upgrade -y; \
     apt-get install -y --no-install-recommends wget \
     apt-transport-https \
-    software-properties-common
+    software-properties-common \
+    dbus-user-session \
+    ca-certificates \
+    curl \
+    gnupg \
+    libvshadow-utils
 
 # Install pandoc
 RUN wget -q "https://github.com/jgm/pandoc/releases/download/3.1.2/pandoc-3.1.2-1-amd64.deb"; \
@@ -29,6 +35,9 @@ RUN apt-get update; \
 # Install clang and zlib
 RUN apt-get install -y clang \
     zlib1g-dev
+
+# Install Podman
+RUN apt-get install -y podman
 
 # Cleanup
 RUN apt-get autoclean -y; \
@@ -61,3 +70,6 @@ RUN mkdir ~/.config/; \
 # Add 'dotnet' CLI completion for Bash
 RUN cat /tmp/dotnet-completion-bash.sh >> ~/.bashrc; \
     rm /tmp/dotnet-completion-bash.sh
+
+# Setup alias for 'docker' to 'podman'
+RUN  echo "alias docker=podman" >> ~/.bashrc
