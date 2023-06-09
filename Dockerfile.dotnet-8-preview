@@ -31,9 +31,6 @@ RUN apt-get update; \
 RUN apt-get install -y clang \
     zlib1g-dev
 
-# Install Podman
-RUN apt-get install -y podman
-
 # Cleanup
 RUN apt-get autoclean -y; \
     apt-get autoremove -y; \
@@ -65,6 +62,3 @@ RUN mkdir ~/.config/; \
 # Add 'dotnet' CLI completion for Bash
 RUN cat /tmp/dotnet-completion-bash.sh >> ~/.bashrc; \
     rm /tmp/dotnet-completion-bash.sh
-
-# Setup alias for 'docker' to 'podman'
-RUN  echo "alias docker=podman" >> ~/.bashrc
